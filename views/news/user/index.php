@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             ['attribute' => 'content',
                 'value' => function($model) {
-                    return mb_substr($model->content, 0, 20) . '...';
+                    return mb_substr(strip_tags($model->content), 0, 20) . '...';
                 },
                 'format'=>'html'
             ],

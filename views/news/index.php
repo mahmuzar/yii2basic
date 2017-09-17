@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
  */
 ?>
 <style>
-   
+
 </style>
 <div class="news">
     <?php
@@ -34,11 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'logo',
                 'value' => function($model) {
-                    return Html::img('@web/uploads/' . $model->logo,[
-                        'class'=>'img-thumbnail',
-                        'style'=>'height: 60px;',
-                        ]
-                            );
+                    return Html::img('@web/uploads/' . $model->logo, [
+                                'class' => 'img-thumbnail',
+                                'style' => 'height: 60px;',
+                                    ]
+                    );
                 },
                 'format' => 'html'
             ],
@@ -47,8 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\DataColumn',
                 'attribute' => 'content',
                 'value' => function($model) {
-                    return mb_substr($model->content, 0, 20) . '...';
-                }
+                    return mb_substr(strip_tags($model->content), 0, 20) . '...';
+                },
+                
             ],
             'status',
             'date',

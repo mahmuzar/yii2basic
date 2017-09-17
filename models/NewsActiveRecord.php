@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\components\MailSender;
 /**
  * This is the model class for table "news".
  *
@@ -51,5 +51,16 @@ class NewsActiveRecord extends \yii\db\ActiveRecord
             'date' => 'Date',
             'logo' => 'Logo',
         ];
+    }
+    
+    public function afterSave($insert, $changedAttributes) {
+        
+         $this->on(self::EVENT_AFTER_INSERT, [new MailSender(), 'run'], [
+            'notify' => [
+                'view' => 'new_news',
+                'class' => MailSender::className(),
+            ]
+        ]);
+        parent::afterSave($insert, $changedAttributes);
     }
 }

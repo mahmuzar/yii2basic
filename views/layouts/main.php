@@ -53,17 +53,14 @@ AppAsset::register($this);
                             '<li>'
                             . Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(
-                                    'Logout (' . Yii::$app->user->identity->username . ')', ['class' => 'btn btn-link logout']
+                                    ' ', ['class' => ['btn btn-link logout', 'glyphicon', 'glyphicon-log-out']]
                             )
                             . Html::endForm()
                             . '</li>'
                             ),
-                    Yii::$app->user->getIdentity() ? (
-                            Yii::$app->user->getIdentity()->role >= 30 ? (
-                                    ['label' => '', 'linkOptions' => ['class' => ['glyphicon', ' glyphicon-cog']], 'url' => ['/options/index']]
-                                    ) : ('')
-
-                            ) : (''),
+                    Yii::$app->user->isGuest ? (''
+                            ) : ( ['label' => '', 'linkOptions' => ['class' => ['glyphicon', ' glyphicon-user']], 'url' => ['/profile/index']]
+                            ),
                 ],
             ]);
             NavBar::end();

@@ -10,6 +10,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
+        '@example' => 'http://rgk/',
     ],
     'components' => [
         'request' => [
@@ -32,8 +33,8 @@ $config = [
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
-                'username' => '##',
-                'password' => '##',
+                'username' => 'kadiev16@gmail.com',
+                'password' => 'Ngs-1234',
                 'port' => '587',
                 'encryption' => 'tls',
             ],

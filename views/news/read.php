@@ -9,6 +9,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,22 +35,21 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
     .news{
-        
-        
+
+
     }
 </style>
 <div class="news">
     <?php
     echo DetailView::widget([
-        'id'=>'df',
+        'id' => 'df',
         'model' => $model,
         'template' => '<tr><td{contentOptions}>{value}</td></tr>',
         'attributes' => [
-            
             [
-                'attribute'=>'title',
+                'attribute' => 'title',
                 'contentOptions' => [
-                    'style' => [    
+                    'style' => [
                     ]
                 ],
             ],
@@ -68,10 +68,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html'
             ],
-            'content',
+            [
+                'attribute' => 'content',
+                'format' => 'html'
+            ]
         ],
     ]);
-    echo \yii\helpers\Html::a('Back', Yii::$app->request->referrer);
+    echo \yii\helpers\Html::a('Back', Yii::$app->request->referrer ? (Yii::$app->request->referrer) : (Url::to(['news/index'])));
     ?>
 
 </div>

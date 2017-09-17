@@ -7,6 +7,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
     public $id;
     public $username;
     public $password;
+    public $status;
     public $authKey;
     public $accessToken;
     public $email;
@@ -24,7 +25,6 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
         }
         return null;
     }
-
     /**
      * @inheritdoc
      */
@@ -45,8 +45,11 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
      * @return static|null
      */
     public static function findByUsername($username) {
-
-        $user = UsersActiveRecord::find()->where(['username' => $username])->one();
+        $user = UsersActiveRecord::findOne([
+            'username'=>$username,
+            'status'=>1
+        ]);
+        var_dump($user);
         if (!is_null($user)) {
             return new static($user->getAttributes(['id', 'username', 'password']));
         }
@@ -82,7 +85,8 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
      * @return bool if password provided is valid for current user
      */
     public function validatePassword($password) {
-        return $this->password === $password;
+       return  password_verify($password, $this->password);
+        
     }
 
 }

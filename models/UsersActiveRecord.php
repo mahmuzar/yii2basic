@@ -6,6 +6,7 @@ use Yii;
 use app\components\Handler;
 use app\components\MailSender;
 use app\components\EventUser;
+use app\models\UserPasswordConfirm;
 
 /**
  * This is the model class for table "Users".
@@ -60,10 +61,33 @@ class UsersActiveRecord extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function beforeSave($insert) {
+        //сохраним пароль для передачи по почте
+        Yii::$app->params['oldPassword'] = $this->password;
+        //по событию захешируем пароль.
+        $this->on(self::EVENT_BEFORE_INSERT, function() {
+            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        });
+
+        return parent::beforeSave($insert);
+    }
+
     public function afterSave($insert, $changedAttributes) {
+        $obj = new UserPasswordConfirm();
+        $obj->user_id = $this->id;
+        $obj->password = $this->password;
+        $obj->token = bin2hex(openssl_random_pseudo_bytes(32));
+        $this->on(self::EVENT_AFTER_INSERT, [$obj, 'save']);
+
+        $this->on(self::EVENT_AFTER_INSERT, [new MailSender(), 'run'], [
+            'token' => $obj->token,
+            'old_password' => Yii::$app->params['oldPassword'],
+            'notify' => [
+                'veiw' => 'newuser',
+                'class' => MailSender::className(),
+            ]
+        ]);
         parent::afterSave($insert, $changedAttributes);
-        //$event = new EventUser();
-        $this->on(self::EVENT_AFTER_INSERT, [new Handler(), 'handler']);
     }
 
 }

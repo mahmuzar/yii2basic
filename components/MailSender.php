@@ -11,24 +11,34 @@ namespace app\components;
 use app\components\Sender;
 use yii\base\Component;
 use Yii;
-class MailSender extends Component implements Sender {
+use yii\base\Event;
 
-    const EVENT_MAIL_SEND = 'messageSend';
-    const EVENT_NEW_USER = 'new_user';
+class MailSender extends Component {
 
-    public function send($data=null) {
-        $body = "Пользователь {$data->sender->username} только что авторизовался";
+    const EVENT_NEW_USER = 'afterInsert';
+
+    public $subject = '';
+    public $template = '';
+
+    public function send(Event $event) {
         
-        Yii::$app->mailer->compose()
+        Yii::$app->mailer->compose($this->template, ['event' => $event])
                 ->setFrom('from@domain.com')
                 ->setTo('mahmuzar@yandex.ru')
-                ->setSubject('Тест')
-                ->setTextBody($body)
+                ->setSubject($this->subject)
                 ->send();
-        
     }
-    public function newUser(){
-        
+
+    public function run(Event $event) {
+        switch ($event->name) {
+            case self::EVENT_NEW_USER:
+                $this->subject = 'Данные для авторизации на';
+                $this->template = $event->data['notify']['view'];
+                $this->send($event);
+
+                break;
+            default :
+        }
     }
 
 }

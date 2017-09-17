@@ -76,10 +76,11 @@ class UsersController extends Controller {
         $model = new UsersActiveRecord();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->trigger($model::EVENT_AFTER_INSERT);
             Yii::$app->session->setFlash('userAdded');
             return $this->redirect(['users/index']);
         }
+        //var_dump($model);
+        //die();
         return $this->renderAjax('_add_user_modal', ['model' => $model]);
     }
 

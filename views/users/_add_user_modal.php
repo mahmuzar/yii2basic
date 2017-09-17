@@ -6,7 +6,7 @@ use yii\bootstrap\Modal;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\UsersActiveRecord */
+/* @var $model app\models\forms\UsersForm */
 /* @var $form ActiveForm */
 $this->registerJs(
         '$("document").ready(function(){
@@ -15,6 +15,7 @@ $this->registerJs(
         });
     });'
 );
+
 ?>
 <div class="add_user_modal">
 

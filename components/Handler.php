@@ -11,9 +11,13 @@ namespace app\components;
 use yii\base\Event;
 
 class Handler {
-    
+
     public function handler(Event $event) {
-        
+
+        foreach ($event->data['notify']['class'] as $className) {
+            $obj = new \ReflectionClass($className);
+            $obj->newInstance()->send($event);
+        }
     }
 
 }

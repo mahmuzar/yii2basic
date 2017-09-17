@@ -11,8 +11,9 @@ namespace app\components;
 use yii\base\Event;
 
 class EventUser extends Event {
-    
+
     const EVENT_NEW_USER = 'new-user';
+
     public $id;
     public $username;
     public $password;
@@ -21,7 +22,11 @@ class EventUser extends Event {
     public $date_of_last_authorization;
     public $role;
     public $alertOption = [];
+
     public function __construct($config = array()) {
         parent::__construct($config);
+        
+        //swith(){
     }
+
 }

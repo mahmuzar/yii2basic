@@ -16,6 +16,9 @@ use yii\bootstrap\Modal;
             $("#add_news").on("pjax:end", function() {
             $("#modal").modal("show");
         });
+        $("#add_news_button").on("click", function(){
+            $("#modal").css("display","none");
+        });
     });'
     );
     Pjax::begin(['id' => 'add_news']);
@@ -39,7 +42,7 @@ use yii\bootstrap\Modal;
 <?= $form->field($model, 'logo')->fileInput() ?>
 
     <div class="form-group">
-    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary','id'=>'add_news_button']) ?>
     </div>
     <?php ActiveForm::end(); ?>
     <?php Modal::end(); ?>

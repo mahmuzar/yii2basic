@@ -93,6 +93,9 @@ class SiteController extends Controller {
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $user = UsersActiveRecord::findOne([$model->user->id]);
+            $user->date_of_last_authorization = (new \DateTime())->format('Y-m-d H:i:s');
+            $user->save();
             return $this->goBack();
         }
         return $this->render('login', [
@@ -144,7 +147,7 @@ class SiteController extends Controller {
     public function actionRegistration() {
         $model = new UsersActiveRecord;
         $model->loadDefaultValues();
-        if ($model->load(Yii::$app->request->post()) && $model->insert()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->render('index');
         }
         return $this->render('registration', ['model' => $model]);
