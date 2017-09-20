@@ -15,12 +15,6 @@ use yii\web\ForbiddenHttpException;
 use app\models\UsersActiveRecord;
 use \yii\filters\AccessControl;
 use app\common\components\AccessRule;
-use app\common\model\User as UserRoles;
-use yii\data\ActiveDataProvider;
-use app\components\MailSender;
-use app\components\EventUser;
-use app\components\Handler;
-use app\models\NotificationOptions;
 use app\models\ProfileModel;
 
 class ProfileController extends Controller {
@@ -40,6 +34,11 @@ class ProfileController extends Controller {
                         'actions' => ['index'],
                         'allow' => TRUE,
                         'roles' => ['@']
+                    ],
+                    [
+                        'actions' => ['activate'],
+                        'allow' => TRUE,
+                        'roles' => ['?']
                     ]
                 ]
             ]
