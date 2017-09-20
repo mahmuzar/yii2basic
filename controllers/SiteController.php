@@ -12,7 +12,6 @@ use app\models\forms\ContactForm;
 use app\common\model\User;
 use app\common\components\AccessRule;
 use app\models\UsersActiveRecord;
-use app\models\forms\RegistrationForm;
 
 class SiteController extends Controller {
 
@@ -76,7 +75,6 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        
         $this->trigger($this::INDEX);
         return $this->render('index');
     }
