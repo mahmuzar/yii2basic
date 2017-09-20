@@ -28,6 +28,7 @@ AppAsset::register($this);
         <div class="wrap">
             <?php
             NavBar::begin([
+                'id' => 'mainNavBar',
                 'brandLabel' => 'My Company',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
@@ -35,6 +36,7 @@ AppAsset::register($this);
                 ],
             ]);
             echo Nav::widget([
+                'id' => 'navs',
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => 'News', 'url' => ['/news/index']],

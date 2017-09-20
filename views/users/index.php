@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
   ]);
 
  */
-
 ?>
 <div class="update">
     <?php
@@ -40,11 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
 
-                        return Html::a('', $url, [
-                                    'id' => 'id' . $key,
-                                    'class' => ['glyphicon', 'glyphicon-pencil'],
-                                    'data' => ['pjax' => 0],
-                                    'data-id' => $key,
+                        return Html::a('', '#'.$model->id, [
+                                    'class' => ['glyphicon', 'glyphicon-pencil', 'update_user']
                                         ]
                         );
                     },

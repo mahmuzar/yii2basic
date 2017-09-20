@@ -14,10 +14,16 @@ $this->registerJs(
             
             $("#update_user_d").on("pjax:end", function() {
             user_update_form.action=localStorage.getItem("href");
-            
+            $("#user_update_form").attr("action", localStorage.getItem("href"));
             $("#update_modal").modal("show");
         });
-    });'
+         $("#update_user_button").on("click", function () {
+        
+        $("#update_modal").css("display", "none");
+    });
+    });
+   
+'
 );
 ?>
 <div class="update_user_modal">
@@ -45,7 +51,7 @@ $this->registerJs(
     <?= $form->field($model, 'role') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'id' => 'update_user_button']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 

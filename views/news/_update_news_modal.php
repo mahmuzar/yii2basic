@@ -18,7 +18,7 @@ $this->registerJs(
 );
 ?>
 
-<div class="update_news">
+<div class="update_news_div">
     <?php
     Pjax::begin(['id' => 'update_news']);
     Modal::begin([

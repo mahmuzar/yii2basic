@@ -9,7 +9,8 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
-
+use yii\bootstrap\ButtonGroup;
+use yii\helpers\Url;
 $this->title = 'Новсти';
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -24,6 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news">
     <?php
+     echo ButtonGroup::widget(
+            ['buttons' => [
+                    Html::a('5', Url::current(['pageSize' => 5]), ['class' => 'btn btn-default btn-sm']),
+                    Html::a('10', Url::current(['pageSize' => 10]), ['class' => 'btn btn-default btn-sm']),
+                    Html::a('20', Url::current(['pageSize' => 20]), ['class' => 'btn btn-default btn-sm']),
+                    Html::a('30', Url::current(['pageSize' => 30]), ['class' => 'btn btn-default btn-sm']),
+                ]
+    ]);
+
     GridView::begin([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -31,11 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'logo',
                 'value' => function($model) {
-                    return Html::img('@web/uploads/' . $model->logo,[
-                        'class'=>'img-thumbnail',
-                        'style'=>'width: 100px;',
-                        ]
-                            );
+                    return Html::img('@web/uploads/' . $model->logo, [
+                                'class' => 'img-thumbnail',
+                                'style' => 'width: 100px;',
+                                    ]
+                    );
                 },
                 'format' => 'html'
             ],
@@ -44,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     return mb_substr(strip_tags($model->content), 0, 20) . '...';
                 },
-                'format'=>'html'
+                'format' => 'html'
             ],
             'date',
             [
@@ -56,8 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'update' => function() {
                         
                     },
-                    
-                            
                 ],
             ]]
     ]);

@@ -13,7 +13,11 @@ $this->registerJs(
             $("#add_user").on("pjax:end", function() {
             $("#modal").modal("show");
         });
-    });'
+    });
+     $("#add_user_button").on("click", function(){
+            $("#modal").css("display","none");
+        });
+'
 );
 
 ?>
@@ -47,7 +51,7 @@ $this->registerJs(
     <?= $form->field($model, 'role') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'id'=>'add_user_button']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 
