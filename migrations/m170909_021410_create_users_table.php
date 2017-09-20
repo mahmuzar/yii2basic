@@ -22,12 +22,13 @@ class m170909_021410_create_users_table extends Migration {
             'role' => $this->integer()->defaultValue(10)->notNull(),
         ]);
         $this->insert('users', array(
-            'email' => 'murad@mail.ru',
+            'email' => 'mahmuzar@yandex.ru',
             'username' => 'murad',
             'password' => password_hash(123, PASSWORD_DEFAULT),
             'status' => 1,
             'role' => 30
         ));
+        
     }
 
     /**
