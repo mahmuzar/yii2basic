@@ -3,14 +3,14 @@
 namespace app\models;
 
 use Yii;
-
+use yii\db\ActiveRecord;
 /**
  * This is the model class for table "notification_options".
  *
  * @property int $id
  * @property string $name
  */
-class NotificationOptions extends \yii\db\ActiveRecord
+class NotificationOptions extends ActiveRecord
 {
     /**
      * @inheritdoc
