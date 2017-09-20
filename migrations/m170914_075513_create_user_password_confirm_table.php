@@ -20,6 +20,20 @@ class m170914_075513_create_user_password_confirm_table extends Migration {
             'not_valid' => $this->integer()->defaultValue(0),
             'date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->notNull(),
         ]);
+         $this->addForeignKey(
+            'fk-user_password_confirm-user_id',
+            'user_password_confirm',
+            'user_id',
+            'users',
+            'id',
+            'CASCADE'
+        );
+
+        $this->createIndex(
+            'idx-user_password_confirm-user_id',
+            'user_password_confirm',
+            'user_id'
+        );
     }
 
     /**
