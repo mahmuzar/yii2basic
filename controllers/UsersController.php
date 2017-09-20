@@ -8,16 +8,15 @@
 
 namespace app\controllers;
 
-use yii;
+use Yii;
 use yii\web\Controller;
 use \yii\filters\AccessControl;
 use app\common\components\AccessRule;
 use app\common\model\User as UserRoles;
 use yii\data\ActiveDataProvider;
 use app\models\UsersActiveRecord;
-use app\components\MailSender;
-use app\components\EventUser;
-use app\components\Handler;
+use app\models\forms\UserUpdateForm;
+
 class UsersController extends Controller {
 
     public function behaviors() {
@@ -57,7 +56,7 @@ class UsersController extends Controller {
             ],
         ];
     }
-   
+
     public function actionIndex() {
 
         $dataProvider = new ActiveDataProvider([
@@ -72,11 +71,14 @@ class UsersController extends Controller {
     }
 
     function actionCreate() {
-        
+
         $model = new UsersActiveRecord();
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('userAdded');
+            $subscriber = new \app\models\Subscribers;
+            $subscriber->user_id = $model->id;
+            $subscriber->save();
             return $this->redirect(['users/index']);
         }
         //var_dump($model);
@@ -91,11 +93,23 @@ class UsersController extends Controller {
 
     function actionUpdate($id) {
         $model = UsersActiveRecord::findOne($id);
-        if ($model->load(Yii::$app->request->post()) && $model->update()) {
-            Yii::$app->session->setFlash('userUpdated');
-            return $this->redirect(['users/index']);
+        $form = new UserUpdateForm();
+        $form->setAttributes($model->getAttributes());
+        $form->password = '';
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->getAttributes());
+            if (!empty($form->password)) {
+                $model->passwordUpdate();
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('userUpdated');
+                    return $this->redirect(['users/index']);
+                }
+            } else {
+                return $this->redirect(['users/index']);
+            }
         }
-        return $this->renderAjax('_update_user_modal', ['model' => $model]);
+        //var_dump($form);
+        return $this->renderAjax('_update_user_modal', ['model' => $form]);
     }
 
     function actionDelete($id) {
