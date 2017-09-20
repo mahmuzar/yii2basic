@@ -6,9 +6,13 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\forms\RegistrationForm */
 /* @var $form ActiveForm */
-?>
-<div class="registration">
 
+$this->title = 'Регистрация нового пользователя';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="row">
+<div class="registration col-md-6 col-md-offset-3">
+    <h2>Регистрация нового пользователя</h2>
     <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'username') ?>
@@ -21,3 +25,4 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div><!-- registration -->
+</div>s
