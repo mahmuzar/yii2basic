@@ -21,6 +21,11 @@ class m170909_015655_create_news_table extends Migration {
             'date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->notNull(),
             'logo' => $this->string()
         ]);
+        $this->createIndex(
+            'idx-news-user_id',
+            'news',
+            'user_id'
+        );
     }
 
     /**
