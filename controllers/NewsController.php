@@ -22,6 +22,7 @@ use yii\data\ActiveDataProvider;
 use app\models\forms\AddNewsForm;
 use yii\web\UploadedFile;
 use yii\web\ForbiddenHttpException;
+use app\modules\notification\NotificationModule;
 
 class NewsController extends Controller {
 
@@ -61,6 +62,7 @@ class NewsController extends Controller {
     public function __construct($id, $module, $config = array()) {
         parent::__construct($id, $module, $config);
     }
+
     public function actionCreate() {
         $model = new AddNewsForm();
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
@@ -68,6 +70,7 @@ class NewsController extends Controller {
         }
 
         if ($model->validate() && $model->save()) {
+
             return $this->redirect(['news/index']);
         }
 
@@ -115,22 +118,45 @@ class NewsController extends Controller {
         throw new ForbiddenHttpException("Forbidden access");
     }
 
-    public function actionIndex() {
+    public function actionIndex($pageSize = null) {
         //$model = new NewsActiveRecord();
+        if (is_null($pageSize)) {
+            $pageSize = 5;
+        }
+
         $dataProvider = new ActiveDataProvider([
             'query' => NewsActiveRecord::find(),
             'pagination' => [
-                'pageSize' => 5,
+                'pageSize' => $pageSize,
             ],
         ]);
         $addNewsForm = new AddNewsForm();
         if (Yii::$app->user->isGuest) {
+            $dataProvider->query->where(['status'=>1]);
             return $this->render('guest/index', ['dataProvider' => $dataProvider]);
         }
         if (Yii::$app->user->getIdentity()->role <= 10) {
+            $dataProvider->query->where(['status'=>1]);
             return $this->render('user/index', ['dataProvider' => $dataProvider]);
         }
         return $this->render('index', ['dataProvider' => $dataProvider, 'model' => $addNewsForm]);
+    }
+
+    public function actionStatus($id = null) {
+        if (!is_null($id)) {
+            $news = NewsActiveRecord::findOne(['id' => $id]);
+            var_dump($news->status);
+            if ($news->status == 1) {
+                $news->status = 0;
+            } else {
+                $news->status = 1;
+            }
+            $news->save();
+        }
+        unset($news);
+        //var_dump($news->status);
+
+        return TRUE;
     }
 
 }
