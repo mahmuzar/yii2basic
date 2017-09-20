@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\modules\notification\NotificationModule;
 
 /**
  * This is the model class for table "user_password_confirm".
@@ -15,21 +16,19 @@ use Yii;
  * @property int $not_valid
  * @property string $date
  */
-class UserPasswordConfirm extends \yii\db\ActiveRecord
-{
+class UserPasswordConfirm extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'user_password_confirm';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['user_id', 'password', 'token'], 'required'],
             [['user_id', 'confirmed', 'not_valid'], 'integer'],
@@ -41,8 +40,7 @@ class UserPasswordConfirm extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
@@ -53,4 +51,10 @@ class UserPasswordConfirm extends \yii\db\ActiveRecord
             'date' => 'Date',
         ];
     }
+
+    public function afterSave($insert, $changedAttributes) {
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
 }

@@ -49,7 +49,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
             'username'=>$username,
             'status'=>1
         ]);
-        var_dump($user);
+        
         if (!is_null($user)) {
             return new static($user->getAttributes(['id', 'username', 'password']));
         }

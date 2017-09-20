@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-use app\components\MailSender;
+use app\modules\notification\NotificationModule;
+
 /**
  * This is the model class for table "news".
  *
@@ -14,24 +15,22 @@ use app\components\MailSender;
  * @property string $date
  * @property string $logo
  */
-class NewsActiveRecord extends \yii\db\ActiveRecord
-{
+class NewsActiveRecord extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'news';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['content'], 'string'],
-            [['user_id'],'integer'],
+            [['user_id'], 'integer'],
             [['status'], 'integer'],
             [['date'], 'safe'],
             [['title', 'logo'], 'string', 'max' => 255],
@@ -41,8 +40,7 @@ class NewsActiveRecord extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'title' => 'Title',
@@ -52,15 +50,17 @@ class NewsActiveRecord extends \yii\db\ActiveRecord
             'logo' => 'Logo',
         ];
     }
-    
+
     public function afterSave($insert, $changedAttributes) {
-        
-         $this->on(self::EVENT_AFTER_INSERT, [new MailSender(), 'run'], [
-            'notify' => [
-                'view' => 'new_news',
-                'class' => MailSender::className(),
-            ]
-        ]);
+
+        $this->on(self::EVENT_AFTER_INSERT, function() {
+            NotificationModule::getInstance()->trigger(
+                    NotificationModule::EVENT_NEW_NEWS, new \app\modules\notification\events\news\NewNewsEvent([
+                'changedAttributes' => $this->getAttributes(),
+                    ])
+            );
+        });
         parent::afterSave($insert, $changedAttributes);
     }
+
 }
