@@ -64,6 +64,7 @@ class NotificationController extends Controller {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             return $data;
         }
+        
         $dataProvider = new ArrayDataProvider([
             'allModels' => $data,
             'pagination' => [
@@ -93,7 +94,7 @@ class NotificationController extends Controller {
             }
         }
         //Yii::$app->db->createCommand()->batchInsert($table, $columns, $rows)
-        
+
         $this->redirect(['index']);
     }
 

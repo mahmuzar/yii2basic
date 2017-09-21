@@ -75,7 +75,8 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        $this->trigger($this::INDEX);
+        $news = \app\models\NewsActiveRecord::find()->where(['id'=>1])->one();
+        //echo (new \app\components\TemplateEngine())->engine($news);
         return $this->render('index');
     }
 

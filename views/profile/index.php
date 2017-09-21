@@ -20,11 +20,7 @@ use yii\bootstrap\Tabs;
         
         echo Tabs::widget([
             'items' => [
-                [
-                    'label' => 'Главная',
-                    'content' => $this->render('_index', ['model'=>$model]),
-                    'active' => true
-                ],
+                
                 [
                     'label' => 'Уведомления',
                     'content' => $this->render('_notifications', ['model'=>$model]),

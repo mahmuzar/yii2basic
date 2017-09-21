@@ -16,6 +16,7 @@ class m170915_133114_create_notifications_table extends Migration {
             'id' => $this->primaryKey(),
             'event' => $this->string()->notNull(),
             'event_id' => $this->integer()->notNull(),
+            'title' => $this->string()->notNull(),
             'status' => $this->boolean()->defaultValue(1),
             'date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->notNull(),
         ]);

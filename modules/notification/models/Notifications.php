@@ -80,42 +80,49 @@ class Notifications extends ActiveRecord {
     public function notViewedNotifications() {
         $sql = "
             SELECT
-              *
-            FROM
-              `notifications`
-            JOIN
-              (
-              SELECT
-                `sbr_id_and_notif_opt_id`.`subscriber_id`
-              FROM
-                `sbr_id_and_notif_opt_id`
-              WHERE
-                `sbr_id_and_notif_opt_id`.`subscriber_id` =(
-                SELECT
-                  `subscribers`.`id`
-                FROM
-                  `subscribers`
-                WHERE
-                  `subscribers`.`user_id` = :user_id
-              ) AND `sbr_id_and_notif_opt_id`.`notification_option_id` =(
-              SELECT
-                `notification_options`.`id`
-              FROM
-                `notification_options`
-              WHERE
-                `notification_options`.`name` = 'interface'
-            )
-            ) AS `t1`
-            WHERE NOT EXISTS
-              (
-              SELECT
-                *
-              FROM
-                `notif_id_and_sbr_id`
-              WHERE
-                `notif_id_and_sbr_id`.`notification_id` = `notifications`.`id` AND
-                `notif_id_and_sbr_id`.`subscriber_id` = `t1`.`subscriber_id`
-            );";
+  *,
+  (
+  SELECT
+    `notification_templates`.`template`
+  FROM
+    `notification_templates`
+  WHERE
+    `notification_templates`.`event` = `notifications`.`event`
+) AS `template`
+FROM
+  `notifications`
+JOIN
+  (
+  SELECT
+    `sbr_id_and_notif_opt_id`.`subscriber_id`
+  FROM
+    `sbr_id_and_notif_opt_id`
+  WHERE
+    `sbr_id_and_notif_opt_id`.`subscriber_id` =(
+    SELECT
+      `subscribers`.`id`
+    FROM
+      `subscribers`
+    WHERE
+      `subscribers`.`user_id` = :user_id
+  ) AND `sbr_id_and_notif_opt_id`.`notification_option_id` =(
+  SELECT
+    `notification_options`.`id`
+  FROM
+    `notification_options`
+  WHERE
+    `notification_options`.`name` = 'interface'
+)
+) AS `t1`
+WHERE NOT EXISTS
+  (
+  SELECT
+    *
+  FROM
+    `notif_id_and_sbr_id`
+  WHERE
+    `notif_id_and_sbr_id`.`notification_id` = `notifications`.`id` AND `notif_id_and_sbr_id`.`subscriber_id` = `t1`.`subscriber_id`
+);";
         return self::findBySql($sql, [':user_id' => Yii::$app->user->identity->id])->asArray()->all();
     }
 
